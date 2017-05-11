@@ -1,0 +1,102 @@
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <button id="getuser1" type="button">Get Poom3d</button>
+    <button id="getuser2" type="button">Get Salim</button>
+    <button id="getuser3" type="button">Get Boy</button>
+    <form action="">
+      <input id="memberId" autocomplete="off" placeholder="memberId"/>
+      <input id="accessToken" autocomplete="off" placeholder="Access Token"/>
+      <input id="channelId" autocomplete="off" placeholder="channelId" value="test"/><button type="button" id="join">Join</button>
+      <input id="m" autocomplete="off" /><button type="submit" id="send" disabled="true">Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var socket = null;
+
+      $('#getuser1').click(function() {
+        $('#memberId').val('5718381b853a9c606297dca9');
+        $('#channelId').val('56f3d22f58f151bb17862b85');
+        $('#accessToken').val('fWj8FEPOAC3afP7aWr5k6uJqsWc7mmKPvyinc6tOe4kkfDwieOwLd44Pp3G74TnE');
+      });
+      $('#getuser2').click(function() {
+        $('#memberId').val('5719a97a9a1825a50b0b19f3');
+        $('#channelId').val('56f3d22f58f151bb17862b85');
+        $('#accessToken').val('fWj8FEPOAC3afP7aWr5k6uJqsWc7mmKPvyinc6tOe4kkfDwieOwLd44Pp3G74TnE');
+      })
+      $('#getuser3').click(function() {
+        $('#memberId').val('56e288ca14afb40c1e8664d6');
+        $('#channelId').val('56f3d22f58f151bb17862b85');
+        $('#accessToken').val('fWj8FEPOAC3afP7aWr5k6uJqsWc7mmKPvyinc6tOe4kkfDwieOwLd44Pp3G74TnE');
+      })
+
+      // Login Chat
+      $('#join').click(function(event) {
+        event.preventDefault();
+        var queryStr = 'channelId=' + $('#channelId').val() + 
+                        '&memberId=' + $('#memberId').val() + 
+                        '&accessToken=' + $('#accessToken').val()
+
+        socket = io.connect('http://localhost:5555', {
+          query: queryStr,
+        });
+        // socket.emit('join', { 
+        //   channelId: $('#channelId').val(),
+        //   memberId: $('#memberId').val()
+        // });
+        $('#join').prop('disabled', true);
+        $('#send').prop('disabled', false);
+        if (socket) {
+          socket.on('welcome', function (data) {
+            console.log(data);
+            var html = '<img src="' + data.member.profile_pic+ '" style="width:50px;height:50px;border-radius:25px"> ' +
+              data.member.displayName + ' has joined the channel.';
+            $('#messages').append($('<li>').html(html));
+          });
+
+          socket.on('comment', function(data){
+            console.log(data);
+            var html = '<img src="' + data.member.profile_pic+ '" style="width:50px;height:50px;border-radius:25px"> ' +
+              data.member.displayName + ':' + data.comment;
+            $('#messages').append($('<li>').html(html));
+          });
+        }; 
+      });
+
+      $('form').submit(function(){
+        if ($('#m').val() !== '') {
+          socket.emit('comment', { 
+            comment: $('#m').val(),
+            memberId: $('#memberId').val(),
+            channelId: $('#channelId').val(),
+            accessToken: $('#accessToken').val()
+          });
+          $('#m').val('');  
+        };
+        
+        return false;
+      });
+
+           
+      
+      // socket.on('news', function (data) {
+      //   console.log(data);
+      //   socket.emit('test event', { my: 'data' });
+      // });
+    </script>
+  </body>
+</html>

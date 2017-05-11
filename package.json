@@ -1,0 +1,37 @@
+{
+  "name": "ving-noti",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://thoonly@bitbucket.org/poom3d/ving-noti.git"
+  },
+  "author": "thoonly",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/poom3d/ving-noti#readme",
+  "dependencies": {
+    "apn": "^1.7.5",
+    "bcryptjs": "^2.3.0",
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
+    "debug": "^2.2.0",
+    "express": "^4.13.4",
+    "ioredis": "^2.0.1",
+    "jwt-simple": "^0.5.0",
+    "kue": "^0.11.0",
+    "mongoose": "^4.4.11",
+    "morgan": "^1.7.0",
+    "node-env-file": "^0.1.8",
+    "node-gcm": "^0.14.0",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.0.0",
+    "path": "^0.12.7",
+    "redis": "^2.6.0-1",
+    "request": "^2.72.0",
+    "socket.io": "^1.4.6"
+  }
+}
